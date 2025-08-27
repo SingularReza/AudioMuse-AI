@@ -293,8 +293,8 @@ def _filter_by_distance(song_results: list, db_conn):
                     f"due to direct distance of {direct_dist:.4f} from "
                     f"'{last_kept_details['title']}' by '{last_kept_details['author']}' (Threshold: {threshold})."
                 )
-
-    return filtered_songs
+                
+    return filtered_songs[1:]
 
 
 def _deduplicate_and_filter_neighbors(song_results: list, db_conn, original_song_details: dict):
@@ -397,6 +397,7 @@ def find_nearest_neighbors_by_id(target_item_id: str, n: int = 10, eliminate_dup
         return []
 
     initial_results = []
+    initial_results.append({"item_id": item_id, "distance": float(0)})
     for voyager_id, dist in zip(neighbor_voyager_ids, distances):
         item_id = id_map.get(voyager_id)
         if item_id and item_id != target_item_id:
